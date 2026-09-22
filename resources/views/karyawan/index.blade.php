@@ -12,7 +12,7 @@
         <!-- Container utama -->
         <div class="max-w-7xl mx-auto px-6 py-8">
 
-            <!-- Header Master Karyawan -->
+<!-- Header Master Karyawan -->
 <div class="flex items-center justify-between mb-8">
 
     <!-- Bagian kiri: Judul dan subtitle -->
@@ -33,6 +33,17 @@
     >
         + Tambah Karyawan
     </button>
+</div>
+
+<!-- Test Alpine.js -->
+<div x-data="{ pesan: 'Alpine.js berhasil!' }">
+
+    <button
+        type="button"
+        x-on:click="alert(pesan)"
+        class="bg-indigo-600 text-white px-4 py-2 rounded-lg cursor-pointer">
+        Test Alpine.js
+    </button>
 
 </div>
 
@@ -46,7 +57,7 @@
         </p>
 
         <h2 class="text-3xl font-bold text-slate-900 mt-2">
-            2
+            4
         </h2>
     </div>
 
@@ -74,14 +85,18 @@
 </div>
 
 <!-- SEARCH & FILTER -->
-<div class="bg-white border border-slate-200 rounded-xl p-5 mb-6 shadow-sm">
+<form
+    action="{{ url('/karyawan') }}"
+    method="GET"
+    class="bg-white border border-slate-200 rounded-xl p-5 mb-6 shadow-sm">
 
-    <div class="flex flex-col md:flex-row gap-4">
+    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
 
         <!-- Search Karyawan -->
-        <div class="flex-1">
+        <div class="w-full lg:flex-1 lg:min-w-0">
             <input
                 type="text"
+                name="search"
                 placeholder="Cari nama karyawan..."
                 class="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
@@ -90,7 +105,8 @@
         <!-- Filter Department -->
         <div>
             <select
-                class="w-full md:w-48 border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                name="department"
+                class="w-full lg:w-48 border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
                 <option value="">Semua Department</option>
                 <option value="Produksi">Produksi</option>
@@ -98,21 +114,23 @@
             </select>
         </div>
 
-<!-- Filter Posisi -->
-<div>
-    <select
-        class="w-full md:w-48 border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    >
-        <option value="">Semua Posisi</option>
-        <option value="Operator">Operator</option>
-        <option value="Staff HR">Staff HR</option>
-    </select>
-</div>
+        <!-- Filter Posisi -->
+        <div>
+            <select
+                name="posisi"
+                class="w-full lg:w-48 border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+                <option value="">Semua Posisi</option>
+                <option value="Operator">Operator</option>
+                <option value="Staff HR">Staff HR</option>
+            </select>
+        </div>
 
         <!-- Filter Status -->
         <div>
             <select
-                class="w-full md:w-40 border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                name="status"
+                class="w-full lg:w-40 border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
                 <option value="">Semua Status</option>
                 <option value="Aktif">Aktif</option>
@@ -120,11 +138,19 @@
             </select>
         </div>
 
+        <!-- Tombol Cari -->
+        <div>
+            <button
+                type="submit"
+                class="w-full lg:w-auto bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-5 py-2 rounded-lg cursor-pointer"
+            >
+                Cari
+            </button>
+        </div>
     </div>
+</form>
 
-</div>
-
-            @foreach ($karyawan as $item)
+            @foreach ($karyawanFiltered as $item)
                 <p>
                     {{ $item['id'] }} -
                     {{ $item['nama'] }} -
