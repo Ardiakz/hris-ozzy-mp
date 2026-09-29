@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::get('/karyawan', [KaryawanController::class, 'index']);
+Route::get('/karyawan/{id}', [KaryawanController::class, 'show']);

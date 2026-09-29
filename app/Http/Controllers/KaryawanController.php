@@ -37,41 +37,21 @@ class KaryawanController extends Controller
                 'posisi' => 'Accountant',
                 'status' => 'Aktif',
             ],
+            [
+                'id' => '005',
+                'nama' => 'Charlie Brown',
+                'department' => 'Produksi',
+                'posisi' => 'Operator',
+                'status' => 'Tidak Aktif',
+            ],
+            [
+                'id' => '006',
+                'nama' => 'David Lee',
+                'department' => 'Warehouse',
+                'posisi' => 'WH Bahan',
+                'status' => 'Aktif',
+            ],
         ];
-
-    // Mengambil pilihan filter dari URL
-$search = request('search');
-$department = request('department');
-$posisi = request('posisi');
-$status = request('status');
-
-// Mengubah array karyawan menjadi Collection
-$karyawanFiltered = collect($karyawan)
-    ->filter(function ($item) use ($search, $department, $posisi, $status) {
-
-        // Filter berdasarkan nama atau ID Karyawan
-        $matchSearch = !$search ||
-            str_contains(strtolower($item['nama']), strtolower($search)) ||
-            str_contains(strtolower($item['id']), strtolower($search));
-
-        // Filter berdasarkan Department
-        $matchDepartment = !$department ||
-            $item['department'] === $department;
-
-        // Filter berdasarkan Posisi
-        $matchPosisi = !$posisi ||
-            $item['posisi'] === $posisi;
-
-        // Filter berdasarkan Status
-        $matchStatus = !$status ||
-            $item['status'] === $status;
-
-        // Karyawan ditampilkan jika memenuhi semua filter
-        return $matchSearch &&
-               $matchDepartment &&
-               $matchPosisi &&
-               $matchStatus;
-    });
 
 $totalKaryawan = count($karyawan);
 
@@ -83,12 +63,14 @@ $karyawanNonaktif = collect($karyawan)
     ->where('status', 'Tidak Aktif')
     ->count();
 
-        return view('karyawan.index', compact(
-        'karyawan',
-        'karyawanFiltered',
-        'totalKaryawan',
-        'karyawanAktif',
-        'karyawanNonaktif'
-        ));
+return view('karyawan.index', [
+    'karyawan' => $karyawan,
+    'totalKaryawan' => $totalKaryawan,
+    'karyawanAktif' => $karyawanAktif,
+    'karyawanNonaktif' => $karyawanNonaktif,
+]);
     }
+
+    public function show($id)
+    {return "Detail karyawan ID: " . $id;}
 }
